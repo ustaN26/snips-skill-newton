@@ -11,6 +11,7 @@ def intent_received(hermes, intent_message):
 	print(intent_message.intent.intent_name)
 
 	if intent_message.intent.intent_name == 'ustaN:tare':
+		hermes.publish_continue_session(intent_message.session_id,"essai de tare",NULL)
 		try:
 			ser = serial.Serial(
 				port='/dev/ttyACM0',
@@ -24,7 +25,7 @@ def intent_received(hermes, intent_message):
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "tared successfully")
 		except:
+			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "Error! tare hasn't succeeded!")
-
 with Hermes(MQTT_ADDR) as h:
 	h.subscribe_intents(intent_received).start()
