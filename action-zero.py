@@ -13,7 +13,7 @@ def intent_received(hermes, intent_message):
 	if intent_message.intent.intent_name == 'ustaN:zero':
 		try:
 			ser = serial.Serial(
-				port='/dev/ttyUSB0',
+				port='/dev/ttyACM0',
 				baudrate = 9600,
 				parity=serial.PARITY_NONE,
 				stopbits=serial.STOPBITS_ONE,
@@ -21,10 +21,10 @@ def intent_received(hermes, intent_message):
 				timeout=1
 			)
 			ser.write(serial.to_bytes([0x01,0x09,0x30,0x30,0x10,0x30,0x31,0x4D,0x0D,0x0A]))
+			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "zero successfully")
 		except:
 			hermes.publish_end_session(intent_message.session_id, "Error! zero hasn't succeeded!")
-		ser.close()
 
 with Hermes(MQTT_ADDR) as h:
 	h.subscribe_intents(intent_received).start()
