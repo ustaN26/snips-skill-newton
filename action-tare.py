@@ -21,9 +21,9 @@ def intent_received(hermes, intent_message):
 				timeout=1
 			)
 			ser.write(serial.to_bytes([0x01,0x09,0x30,0x30,0x10,0x30,0x34,0x4D,0x0D,0x0A]))
-			hermes.publish_end_session(intent_message.session_id, "printed successfully")
+			hermes.publish_end_session(intent_message.session_id, "tared successfully")
 		except:
-			hermes.publish_end_session(intent_message.session_id, "Error! print hasn't succeeded!")
+			hermes.publish_end_session(intent_message.session_id, "Error! tare hasn't succeeded!")
 		ser.close()
 
 with Hermes(MQTT_ADDR) as h:
