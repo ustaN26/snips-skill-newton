@@ -18,3 +18,4 @@ fi
 . $VENV/bin/activate
 
 pip install -r requirements.txt
+sudo chmod 777 /dev/ttyACM0

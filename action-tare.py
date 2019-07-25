@@ -13,18 +13,14 @@ def intent_received(hermes, intent_message):
 	try:
 		ser = serial.Serial(
 			port='/dev/ttyACM0',
-			baudrate = 9600,
-			parity=serial.PARITY_NONE,
-			stopbits=serial.STOPBITS_ONE,
-			bytesize=serial.EIGHTBITS,
-			timeout=1
+			baudrate = 9600
 		)
 		ser.write(serial.to_bytes([0x01,0x09,0x30,0x30,0x10,0x30,0x34,0x4D,0x0D,0x0A]))
 		ser.close()
-		hermes.publish_end_session(intent_message.session_id, "tared successfully")
+		hermes.publish_end_session(intent_message.session_id, "tare success")
 	except:
 		ser.close()
-		hermes.publish_end_session(intent_message.session_id, "tare failed")
+		hermes.publish_end_session(intent_message.session_id, "tare fail")
 
 
 with Hermes(MQTT_ADDR) as h:
