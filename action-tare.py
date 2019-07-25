@@ -7,7 +7,8 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 
 def intent_received(hermes, intent_message):
-	hermes.publish_end_session(intent_message.session_id, "tared successfully")
+	if intent_message.intent.intent_name == 'ustaN:tare':
+		hermes.publish_end_session(intent_message.session_id, "tared successfully")
 
 with Hermes(MQTT_ADDR) as h:
 	h.subscribe_intents(intent_received).start()
