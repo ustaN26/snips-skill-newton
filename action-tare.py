@@ -23,7 +23,7 @@ def intent_received(hermes, intent_message):
 	#		)
 	#		ser.write(serial.to_bytes([0x01,0x09,0x30,0x30,0x10,0x30,0x34,0x4D,0x0D,0x0A]))
 	#		ser.close()
-			hermes.publish_end_session(intent_message.session_id, "tared successfully")
+	hermes.publish_end_session(intent_message.session_id, "tared successfully")
 	#	except:
 	#		ser.close()
 	#		hermes.publish_end_session(intent_message.session_id, "Error! tare hasn't succeeded!")
