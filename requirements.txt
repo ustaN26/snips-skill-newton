@@ -1,2 +1,4 @@
 hermes_python>=0.1
 pytz
+serial
+pyserial
