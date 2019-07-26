@@ -19,9 +19,9 @@ def intent_received(hermes, intent_message):
 			ser.write(serial.to_bytes([0x01,0x09,0x30,0x30,0x05,0x30,0x31,0x4C,0x0D,0x0A]))
 			ser.flush()
 			time.sleep(0.5)
-			out = ser.read(14)
+			out = ser.read()
 			ser.close()
-			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+str(out))
+			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+str(out[len(out)-9:len(out)]))
 		except:
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "erreur lecture poids")
