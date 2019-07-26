@@ -29,16 +29,17 @@ def intent_received(hermes, intent_message):
 				baudrate = 9600
 			)
 			ser.write(serial.to_bytes([0x01,0x09,0x30,0x30,0x05,0x30,0x31,0x4C,0x0D,0x0A]))
-			time.sleep(0.5)
-			out = ser.read()
+			time.sleep(1)
+			out = ser.read(15)
 			out = verbalise_unite(out)
-			out = out.replace(out[0:5]," ")
-			print(out)
+			out2 = out.replace(out[0:5]," ")
+			print(out2)
 			ser.close()
-			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+out)
-		except:
+			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+str(out2))
+		except OSError as err:
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "erreur lecture poids")
+			hermes.publish_end_session(intent_message.session_id, err)
 
 with Hermes(MQTT_ADDR) as h:
 	h.subscribe_intents(intent_received).start()
