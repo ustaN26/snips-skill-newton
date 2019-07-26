@@ -32,8 +32,8 @@ def intent_received(hermes, intent_message):
 			time.sleep(0.5)
 			out = ser.read()
 #			out = "b'\x01\x02010005.2t"
-			out = verbalise_unite(out)
-			out = out.replace("b'\x01\x0201"," ")
+#			out = verbalise_unite(out)
+#			out = out.replace("b'\x01\x0201"," ")
 			print(out)
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+out)
