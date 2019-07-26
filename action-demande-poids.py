@@ -20,7 +20,7 @@ def intent_received(hermes, intent_message):
 			ser.flush()
 			time.sleep(0.5)
 			out = ser.read()
-			out=out[12:len(out)]
+			out = out[12:]
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+out)
 		except:
