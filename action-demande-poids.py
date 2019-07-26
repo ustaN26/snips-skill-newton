@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from hermes_python.hermes import Hermes
 import serial
+import time
 
 MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
@@ -17,6 +18,7 @@ def intent_received(hermes, intent_message):
 			)
 			ser.write(serial.to_bytes([0x01,0x09,0x30,0x30,0x05,0x30,0x31,0x4C,0x0D,0x0A]))
 			ser.flush()
+			time.sleep(0.5)
 			out = ser.read(14)
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+str(out))
