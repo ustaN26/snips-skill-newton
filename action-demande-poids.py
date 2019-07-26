@@ -7,6 +7,16 @@ MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
+def verbalise_unite(txt):
+	if "g" in txt:
+		txt.replace("g","gramme")
+	if "kgramme" in txt:
+		txt.replace("kgramme","kilogramme")
+	if "pcs" in txt:
+		txt.replace("pcs","pieces")
+	if "T" in txt:
+		txt.replace("T","tonnes")
+	return txt
 
 def intent_received(hermes, intent_message):
 	print(intent_message.intent.intent_name)
@@ -20,9 +30,10 @@ def intent_received(hermes, intent_message):
 			ser.flush()
 			time.sleep(0.5)
 			out = ser.read()
-			out = out[12:]
+			out = verbalise_unite(out)
+			out.replace("b'\x01\x0201","")
 			ser.close()
-			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+out)
+			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+str(out))
 		except:
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "erreur lecture poids")
