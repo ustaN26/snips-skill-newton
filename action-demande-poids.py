@@ -10,12 +10,12 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 def verbalise_unite(txt):
 	if "g" in txt:
 		txt=txt.replace("g"," gramme")
-	if "k gramme" in txt:
-		txt=txt.replace("k gramme"," kilogramme")
-	if "pcs" in txt:
+	elif "kg" in txt:
+		txt=txt.replace("kg"," kilogramme")
+	elif "pcs" in txt:
 		txt=txt.replace("pcs"," pieces")
-	if "T" in txt:
-		txt=txt.replace("T"," tonnes")
+	elif "t" in txt:
+		txt=txt.replace("t"," tonnes")
 	if "." in txt:
 		txt=txt.replace(".",",")
 	return txt
@@ -31,8 +31,10 @@ def intent_received(hermes, intent_message):
 			ser.write(serial.to_bytes([0x01,0x09,0x30,0x30,0x05,0x30,0x31,0x4C,0x0D,0x0A]))
 			time.sleep(0.5)
 			out = ser.read()
+#			out = "b'\x01\x02010005.2t"
 			out = verbalise_unite(out)
-#			out = out.replace("b'\x01\x0201"," ")
+			out = out.replace("b'\x01\x0201"," ")
+			print(out)
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "le poids brut est de "+out)
 		except:
