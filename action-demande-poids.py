@@ -33,7 +33,7 @@ def intent_received(hermes, intent_message):
 			out = str(ser.read(16))
 			print(out)
 			out = out.replace(out[0:out.index("0201")+4],"")
-			out = out[0:9])
+			out = out[0:9]
 			out = out.replace(str(out[0:7]),str(float(str(out[0:7]))))			
 			out = verbalise_unite(out)
 			print(out)
