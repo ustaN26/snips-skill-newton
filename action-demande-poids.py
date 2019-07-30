@@ -9,19 +9,19 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 def getPoids(txt,typepds):
 	if 'kg' in txt:
-		txt = txt[index('kg')-7:index('kg')+2]
+		txt = txt[txt.index('kg')-7:txt.index('kg')+2]
 		txt = txt.replace(str(txt[0:7]), str(float(str(txt[0:7]))))
 		txt = txt.replace('kg', ' kilogramme')
 	elif 'g' in txt:
-		txt = txt[index('g') - 7:index('g') + 1]
+		txt = txt[txt.index('g') - 7:txt.index('g') + 1]
 		txt = txt.replace(str(txt[0:7]), str(float(str(txt[0:7]))))
 		txt = txt.replace('g', ' gramme')
 	elif 'pcs' in txt:
-		txt = txt[index('pcs') - 7:index('pcs') + 3]
+		txt = txt[txt.index('pcs') - 7:txt.index('pcs') + 3]
 		txt = txt.replace(str(txt[0:7]), str(float(str(txt[0:7]))))
 		txt = txt.replace('pcs', ' pieces')
 	elif 't' in txt:
-		txt = txt[index('t') - 7:index('t') + 1]
+		txt = txt[txt.index('t') - 7:txt.index('t') + 1]
 		txt = txt.replace(str(txt[0:7]), str(float(str(txt[0:7]))))
 		txt = txt.replace('t', ' tonnes')
 	else:
