@@ -7,18 +7,38 @@ MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
-def verbalise_unite(txt):
+def getPoids(txt,typepds):
 	if 'kg' in txt:
-		txt=txt.replace('kg',' kilogramme')
+		txt = txt[index('kg')-7:index('kg')+2]
+		txt = txt.replace(str(txt[0:7]), str(float(str(txt[0:7]))))
+		txt = txt.replace('kg', ' kilogramme')
 	elif 'g' in txt:
-		txt=txt.replace('g',' gramme')
+		txt = txt[index('g') - 7:index('g') + 1]
+		txt = txt.replace(str(txt[0:7]), str(float(str(txt[0:7]))))
+		txt = txt.replace('g', ' gramme')
 	elif 'pcs' in txt:
-		txt=txt.replace('pcs',' pieces')
+		txt = txt[index('pcs') - 7:index('pcs') + 3]
+		txt = txt.replace(str(txt[0:7]), str(float(str(txt[0:7]))))
+		txt = txt.replace('pcs', ' pieces')
 	elif 't' in txt:
-		txt=txt.replace('t',' tonnes')
+		txt = txt[index('t') - 7:index('t') + 1]
+		txt = txt.replace(str(txt[0:7]), str(float(str(txt[0:7]))))
+		txt = txt.replace('t', ' tonnes')
+	else:
+		return "erreur trame"
 	if '.' in txt:
-		txt=txt.replace('.',',')
-	return txt
+		txt = txt.replace('.', ',')
+	return "le poids {} est de {}".format(typepds,txt)
+
+
+def sendcmd(typepds, ser):
+	if typepds == "tare":
+		ser.write(serial.to_bytes([0x01, 0x05, 0x30, 0x32, 0x4C, 0x0D, 0x0A]))
+	elif typepds == "net":
+		ser.write(serial.to_bytes([0x01, 0x05, 0x30, 0x33, 0x4C, 0x0D, 0x0A]))
+	else:
+		ser.write(serial.to_bytes([0x01, 0x05, 0x30, 0x31, 0x4C, 0x0D, 0x0A]))
+
 
 def intent_received(hermes, intent_message):
 	print(intent_message.intent.intent_name)
@@ -26,23 +46,22 @@ def intent_received(hermes, intent_message):
 		try:
 			ser = serial.Serial(
 				port='/dev/ttyACM0',
-				baudrate = 9600
+				baudrate=9600
 			)
-			ser.write(serial.to_bytes([0x01,0x05,0x30,0x31,0x4C,0x0D,0x0A]))
+			typepds=str(intent_message.slots.type_poids.first())
+			sendcmd(typepds,ser)
 			time.sleep(1)
 			out = str(ser.read(16))
-			print(out)
-			out = out.replace(out[0:out.index("0201")+4],"")
-			out = out[0:9]
-			out = out.replace(str(out[0:7]),str(float(str(out[0:7]))))			
-			out = verbalise_unite(out)
-			print(out)
+			print("trame= "+out)
+			out = getPoids(out,typepds)
+			print("sortie= "+out)
 			ser.close()
-			hermes.publish_end_session(intent_message.session_id, "le poids brute est de "+str(out))
+			hermes.publish_end_session(intent_message.session_id, out)
 		except OSError as err:
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, "erreur lecture poids")
-			hermes.publish_end_session(intent_message.session_id, err)
+			hermes.publish_end_session(intent_message.session_id, str(err))
+
 
 with Hermes(MQTT_ADDR) as h:
 	h.subscribe_intents(intent_received).start()
