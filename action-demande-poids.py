@@ -7,7 +7,7 @@ MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
-def getPoids(txt,typepds):
+def getpoids(txt,typepds):
 	if 'kg' in txt:
 		txt = txt[txt.index('kg')-7:txt.index('kg')+2]
 		txt = txt.replace(str(txt[0:7]), str(float(str(txt[0:7]))))
@@ -56,7 +56,7 @@ def intent_received(hermes, intent_message):
 			time.sleep(1)
 			out = str(ser.read(16))
 			print("trame= "+out)
-			out = getPoids(out,typepds)
+			out = getpPoids(out,typepds)
 			print("sortie= "+out)
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, out)
