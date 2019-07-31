@@ -48,9 +48,9 @@ def intent_received(hermes, intent_message):
 				port='/dev/ttyACM0',
 				baudrate=9600
 			)
-			if intent_message.slots.type_poids.first() is None
+			if intent_message.slots.type_poids.first() is None:
 				typepds="net"
-			else
+			else:
 				typepds=str(intent_message.slots.type_poids.first().value)
 			sendcmd(typepds,ser)
 			time.sleep(1)
