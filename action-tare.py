@@ -87,11 +87,11 @@ def intent_received(hermes, intent_message):
 				port='/dev/ttyACM0',
 				baudrate=9600
 			)
-			if intent_message.slots.weigh_value.first() is None:
+			if intent_message.slots.valeurtare.first() is None:
 				ser.write(serial.to_bytes([0x01, 0x10, 0x30, 0x34, 0x4D, 0x0D, 0x0A]))
 				hermes.publish_end_session(intent_message.session_id, "tare success")
 			else:
-				slotval = intent_message.slots.weigh_value.first().value
+				slotval = intent_message.slots.valeurtare.first().value
 				print(str(slotval))
 				valuetare = gestiontare(ser, slotval)
 				ser.write(serial.to_bytes([0x01, 0x02, 0x30, 0x32]))
