@@ -56,7 +56,7 @@ def intent_received(hermes, intent_message):
 			time.sleep(1)
 			out = str(ser.read(16))
 			print("trame= "+out)
-			out = getpPoids(out,typepds)
+			out = getpoids(out,typepds)
 			print("sortie= "+out)
 			ser.close()
 			hermes.publish_end_session(intent_message.session_id, out)
