@@ -63,19 +63,19 @@ def gestiontare(ser, slotval):
 	trame = getformatrame(slotval)
 	print("slot reçu= {}".format(slotval))
 	print("slot formaté= {}".format(trame[2]))
-	result = str(float(trame[2])* 1.0 * pow(10, 3 * (listunite.index(trame[1]) - listunite.index(vallue[1]))))
-	print(str(result))
-	result = result[result.index('.') - vallue[0]:result.index('.') - (vallue[0] - 7)]
 	i = 0
 	val = 7 - len(result)
 	while i < val:
 		result = "0{}".format(result)
 		i = i + 1
+	result = str(float(trame[2])* 1.0 * pow(10, 3 * (listunite.index(trame[1]) - listunite.index(vallue[1]))))
+	print(str(result))
+	result = result[result.index('.') - vallue[0]:result.index('.') - (vallue[0] - 7)]
 	result = "{}{}".format(result, vallue[1])
 	while True:
 		if len(result) == 10:
 			break
-			result = "{} ".format(result)
+		result = "{} ".format(result)
 	print("trame=\'{}\'".format(result))
 	return result
 
