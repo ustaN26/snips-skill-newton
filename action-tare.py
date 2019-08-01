@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 from hermes_python.hermes import Hermes
 import serial
 import time
@@ -10,8 +10,6 @@ listunite = ["g", "kg", "t"]
 
 
 def getformatrame(txt):
-	if ' virgule ' in txt:
-		txt = txt.replace(' virgule ', '.')
 	if ' kilogrammes' in txt:
 		unite = "kg"
 		txt = txt.replace(' kilogrammes', 'kg')
@@ -29,8 +27,6 @@ def getformatrame(txt):
 		txt = txt.replace(' tonnes', 't')
 		txt = txt[:txt.index('t') + 1]
 	virgule = 7
-	if '.' in txt:
-		virgule = txt.index('.')
 	val = 7-len(txt)
 	i = 0
 	while i < val:
@@ -67,7 +63,7 @@ def gestiontare(ser, slotval):
 	trame = getformatrame(slotval)
 	print("slot reçu= {}".format(slotval))
 	print("slot formaté= {}".format(trame[2]))
-	result = str(float(trame[2]) * pow(10, 3 * (listunite.index(trame[1]) - listunite.index(vallue[1]))))
+	result = str(float(trame[2])* 1.0 * pow(10, 3 * (listunite.index(trame[1]) - listunite.index(vallue[1]))))
 	print(str(result))
 	result = result[result.index('.') - vallue[0]:result.index('.') - (vallue[0] - 7)]
 	i = 0
